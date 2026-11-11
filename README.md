@@ -23,18 +23,19 @@ npm start
 Alternatively, on a hosting provider set the same values in its environment/secrets settings. `SMTP_USER` must be the support mailbox, and `SMTP_PASS` must be its Google App Password (not the normal Google account password). Without working SMTP credentials, contact messages will still be saved, but sending email notifications will report a clear error. At startup, the server logs whether the required email settings are present; failed delivery logs the underlying SMTP error.
 
 ## Deploy to Render
-The included `render.yaml` configures a Node web service and persistent storage for site data and uploaded images. To publish and enable automatic deploys when GitHub changes are pushed:
+The included `render.yaml` configures a free Node web service and the `kcausda.com` custom domain. Free Render services have temporary storage: membership, messages and uploaded photos can be lost when the service restarts or redeploys. To publish and enable automatic deploys when GitHub changes are pushed:
 1. Push this project to the `Apexinsight/KCAUSDA` GitHub repository.
 2. In Render, choose **New > Blueprint**, connect that repository, and apply the `render.yaml` blueprint.
-3. Set the prompted `ADMIN_PASSWORD` to a unique strong password and `SMTP_PASS` to the support mailbox's Gmail App Password.
-4. After deployment, open the Render URL and add `/admin.html` for the dashboard.
+3. The Blueprint generates a unique `ADMIN_PASSWORD`; copy it from the Render service environment settings for admin sign-in. Set `SMTP_PASS` to the support mailbox's Gmail App Password to enable contact email.
+4. In the domain registrar's DNS settings, point the root domain to Render and remove conflicting `AAAA` records. For a standard DNS provider, add an `A` record for `@` pointing to `216.24.57.1`; Render's Blueprint adds both the root and `www` domains. Configure `www` as a `CNAME` to the service's `onrender.com` hostname if it is not automatically configured by your DNS provider. In Cloudflare, use DNS-only CNAME records for both `@` and `www` pointing to the Render hostname.
+5. In Render, verify the custom domain and wait for its managed TLS certificate. The site is served at `https://kcausda.com/`; the admin dashboard is at `https://kcausda.com/admin.html`.
 
 Keep `.env` and real passwords out of GitHub. Render receives secrets through its environment settings.
 
 ## GitHub Pages preview
 The GitHub Pages workflow publishes the static frontend from `public/` at `https://apexinsight.github.io/KCAUSDA/`. In the repository, open **Settings > Pages** and set the source to **GitHub Actions**. The first deploy runs after the workflow file is pushed to `main`.
 
-GitHub Pages cannot run the Node/Express server. The Pages site is a visual preview; live events, family groups, contact forms, admin actions, uploads and other `/api` features require the Render service above. To connect the Pages frontend to a deployed backend, set the `data-api-base` attribute on the `<html>` element in both `public/index.html` and `public/admin.html` to that service's HTTPS origin, with no trailing slash. The backend must allow requests from `https://apexinsight.github.io` (CORS) for cross-origin API calls.
+GitHub Pages cannot run the Node/Express server. The Pages site is a visual preview; live events, family groups, contact forms, admin actions, uploads and other `/api` features require the Render service above.
 
 ## Change the admin password (IMPORTANT)
 The default password is `kcau-sda-admin`; do not use it on a public deployment. Set a unique strong password using the `ADMIN_PASSWORD` environment variable above. Admin sign-in checks this password directly and does not send an email code.

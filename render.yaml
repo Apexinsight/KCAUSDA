@@ -2,20 +2,15 @@ services:
   - type: web
     name: kcau-sda-church-website
     runtime: node
+    plan: free
     buildCommand: npm ci
     startCommand: npm start
     healthCheckPath: /
-    disk:
-      name: kcau-sda-data
-      mountPath: /var/data
-      sizeGB: 1
+    domains:
+      - kcausda.com
     envVars:
       - key: NODE_VERSION
         value: 22
-      - key: DATA_DIR
-        value: /var/data/data
-      - key: UPLOAD_DIR
-        value: /var/data/uploads
       - key: SMTP_USER
         value: kcausdasupport@gmail.com
       - key: SMTP_HOST
@@ -25,6 +20,6 @@ services:
       - key: SMTP_SECURE
         value: true
       - key: ADMIN_PASSWORD
-        sync: false
+        generateValue: true
       - key: SMTP_PASS
         sync: false
