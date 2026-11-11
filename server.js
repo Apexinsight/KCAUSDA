@@ -20,6 +20,8 @@ if (envResult.error && envResult.error.code !== 'ENOENT') {
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || (process.env.VERCEL ? '' : 'kcau-sda-admin');
+const ADMIN_SESSION_SECRET = process.env.ADMIN_SESSION_SECRET || (process.env.VERCEL ? '' : crypto.randomBytes(32).toString('hex'));
+const ADMIN_SESSION_TTL_SECONDS = 12 * 60 * 60;
 const SUPPORT_EMAIL = 'kcausdasupport@gmail.com';
 const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
 const SMTP_PORT = Number(process.env.SMTP_PORT || 465);
@@ -241,11 +243,34 @@ const safeHexEqual = (left, right) => {
 const checkinAttempts = new Map();
 
 /* ---------- admin auth (simple token) ---------- */
-const tokens = new Set();
+const createAdminToken = () => {
+  const payload = Buffer.from(JSON.stringify({
+    exp: Math.floor(Date.now() / 1000) + ADMIN_SESSION_TTL_SECONDS,
+  })).toString('base64url');
+  const signature = crypto.createHmac('sha256', ADMIN_SESSION_SECRET).update(payload).digest('hex');
+  return `${payload}.${signature}`;
+};
+
+const isValidAdminToken = (token) => {
+  if (!ADMIN_SESSION_SECRET || typeof token !== 'string') return false;
+  const [payload, signature, extra] = token.split('.');
+  if (!payload || !signature || extra !== undefined) return false;
+  const expected = crypto.createHmac('sha256', ADMIN_SESSION_SECRET).update(payload).digest('hex');
+  if (!safeHexEqual(signature, expected)) return false;
+  try {
+    const session = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
+    return Number.isSafeInteger(session.exp) && session.exp > Math.floor(Date.now() / 1000);
+  } catch {
+    return false;
+  }
+};
 
 app.post('/api/login', (req, res) => {
   if (!ADMIN_PASSWORD) {
     return res.status(503).json({ error: 'Admin sign-in is not configured. Set ADMIN_PASSWORD in the Vercel project settings.' });
+  }
+  if (!ADMIN_SESSION_SECRET) {
+    return res.status(503).json({ error: 'Admin sessions are not configured. Set ADMIN_SESSION_SECRET in the Vercel project settings.' });
   }
   if (isRateLimited(loginRequestAttempts, requestIp(req), 10, 15 * 60 * 1000)) {
     return res.status(429).json({ error: 'Too many sign-in attempts. Please wait and try again.' });
@@ -254,14 +279,12 @@ app.post('/api/login', (req, res) => {
   const real = Buffer.from(ADMIN_PASSWORD);
   const ok = given.length === real.length && crypto.timingSafeEqual(given, real);
   if (!ok) return res.status(401).json({ error: 'Wrong password' });
-  const token = crypto.randomBytes(24).toString('hex');
-  tokens.add(token);
-  res.json({ token });
+  res.json({ token: createAdminToken() });
 });
 
 const admin = (req, res, next) => {
   const token = (req.headers.authorization || '').replace('Bearer ', '');
-  if (!tokens.has(token)) return res.status(401).json({ error: 'Not authorised' });
+  if (!isValidAdminToken(token)) return res.status(401).json({ error: 'Not authorised' });
   next();
 };
 

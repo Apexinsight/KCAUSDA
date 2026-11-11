@@ -25,7 +25,7 @@ Alternatively, on a hosting provider set the same values in its environment/secr
 ## Deploy to Vercel
 Vercel detects the Express app in `server.js` and serves files from `public/`. To create the project, open the [Vercel dashboard](https://vercel.com/blessed-bens-projects), choose **Add New > Project**, import `Apexinsight/KCAUSDA`, and deploy with the repository root as the project root. The site and `/api/...` endpoints then share the same Vercel URL.
 
-Before using the admin page, add a strong `ADMIN_PASSWORD` in **Project Settings > Environment Variables** and redeploy. To enable contact email, also set `SMTP_USER` to `kcausdasupport@gmail.com` and `SMTP_PASS` to that mailbox's Gmail App Password. Keep secrets out of GitHub.
+Before using the admin page, add `ADMIN_PASSWORD` and a separate random `ADMIN_SESSION_SECRET` in **Project Settings > Environment Variables**, then redeploy. The session secret lets sign-in work across Vercel's serverless function instances. To enable contact email, also set `SMTP_USER` to `kcausdasupport@gmail.com` and `SMTP_PASS` to that mailbox's Gmail App Password. Keep secrets out of GitHub.
 
 **Development storage limitation:** Vercel Functions have a read-only filesystem except for temporary `/tmp` scratch space. This project uses `/tmp` on Vercel so API writes and uploads can work during development, but they are not durable or shared between separate function instances. Admin edits, member registrations, messages, uploads and check-in keys may disappear. Before relying on the site for real church data, connect a persistent database and file store and migrate the JSON and upload storage to those services.
 
