@@ -22,15 +22,15 @@ npm start
 
 Alternatively, on a hosting provider set the same values in its environment/secrets settings. `SMTP_USER` must be the support mailbox, and `SMTP_PASS` must be its Google App Password (not the normal Google account password). Without working SMTP credentials, contact messages will still be saved, but sending email notifications will report a clear error. At startup, the server logs whether the required email settings are present; failed delivery logs the underlying SMTP error.
 
+## Deploy to Vercel
+Vercel detects the Express app in `server.js` and serves files from `public/`. To create the project, open the [Vercel dashboard](https://vercel.com/blessed-bens-projects), choose **Add New > Project**, import `Apexinsight/KCAUSDA`, and deploy with the repository root as the project root. The site and `/api/...` endpoints then share the same Vercel URL.
+
+Before using the admin page, add a strong `ADMIN_PASSWORD` in **Project Settings > Environment Variables** and redeploy. To enable contact email, also set `SMTP_USER` to `kcausdasupport@gmail.com` and `SMTP_PASS` to that mailbox's Gmail App Password. Keep secrets out of GitHub.
+
+**Development storage limitation:** Vercel Functions have a read-only filesystem except for temporary `/tmp` scratch space. This project uses `/tmp` on Vercel so API writes and uploads can work during development, but they are not durable or shared between separate function instances. Admin edits, member registrations, messages, uploads and check-in keys may disappear. Before relying on the site for real church data, connect a persistent database and file store and migrate the JSON and upload storage to those services.
+
 ## GitHub Pages preview
-The GitHub Actions workflow publishes the static frontend at `https://apexinsight.github.io/KCAUSDA/` whenever `main` is updated. In the repository, open **Settings > Pages** and set **Build and deployment > Source** to **GitHub Actions**. The first successful workflow run appears in the repository's **Actions** tab.
-
-GitHub Pages hosts the visual preview only. It cannot run this project's Node/Express server, so live events, family groups, contact forms, admin management, uploads and other API features need a Node host. The admin page explains this limitation when opened on the Pages URL.
-
-## Optional Node backend on Render
-The included `render.yaml` can create a free Node web service for API features. Free Render services have temporary storage, so membership, messages and uploaded photos can be lost after a restart or redeploy. In Render, choose **New > Blueprint**, connect this repository and apply `render.yaml`. Set `SMTP_PASS` to the support mailbox's Gmail App Password if contact email notifications should be enabled. For a fully integrated frontend and backend on one origin, use a Node web host to serve the website; GitHub Pages cannot proxy API calls to it.
-
-Keep `.env` and real passwords out of GitHub. Render receives secrets through its environment settings.
+The GitHub Actions workflow can also publish a static preview at `https://apexinsight.github.io/KCAUSDA/`. Set **Repository Settings > Pages > Build and deployment > Source** to **GitHub Actions**. GitHub Pages does not run the Express backend, so use the Vercel URL for the fully integrated development site.
 
 ## Change the admin password (IMPORTANT)
 The default password is `kcau-sda-admin`; do not use it on a public deployment. Set a unique strong password using the `ADMIN_PASSWORD` environment variable above. Admin sign-in checks this password directly and does not send an email code.

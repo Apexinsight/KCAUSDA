@@ -10,6 +10,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const os = require('os');
 
 const envResult = require('dotenv').config();
 if (envResult.error && envResult.error.code !== 'ENOENT') {
@@ -19,6 +20,9 @@ if (envResult.error && envResult.error.code !== 'ENOENT') {
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'kcau-sda-admin';
+if (process.env.VERCEL && !process.env.ADMIN_PASSWORD) {
+  throw new Error('Set a strong ADMIN_PASSWORD in the Vercel project settings before deploying.');
+}
 const SUPPORT_EMAIL = 'kcausdasupport@gmail.com';
 const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
 const SMTP_PORT = Number(process.env.SMTP_PORT || 465);
@@ -27,8 +31,10 @@ const SMTP_PASS = (process.env.SMTP_PASS || '').replace(/\s/g, '');
 const SMTP_SECURE = process.env.SMTP_SECURE
   ? process.env.SMTP_SECURE.toLowerCase() === 'true'
   : SMTP_PORT === 465;
-const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
-const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, 'public', 'uploads');
+// Vercel Functions can only write to /tmp, and that storage is temporary.
+const VERCEL_DATA_ROOT = process.env.VERCEL ? path.join(os.tmpdir(), 'kcau-sda') : null;
+const DATA_DIR = process.env.DATA_DIR || (VERCEL_DATA_ROOT ? path.join(VERCEL_DATA_ROOT, 'data') : path.join(__dirname, 'data'));
+const UPLOAD_DIR = process.env.UPLOAD_DIR || (VERCEL_DATA_ROOT ? path.join(VERCEL_DATA_ROOT, 'uploads') : path.join(__dirname, 'public', 'uploads'));
 
 app.use(express.json({ limit: '5mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -623,13 +629,17 @@ app.delete('/api/messages/:id', admin, (req, res) => {
   res.json({ ok: true });
 });
 
-app.listen(PORT, () => {
-  console.log(`KCAU SDA Church website running on http://localhost:${PORT}`);
-  console.log(`Admin dashboard:               http://localhost:${PORT}/admin.html`);
-  if (!process.env.ADMIN_PASSWORD) console.log('Using the DEFAULT admin password - please change it (see server.js).');
-  if (SMTP_USER.toLowerCase() !== SUPPORT_EMAIL || !SMTP_PASS) {
-    console.warn(`Email is not configured. Set SMTP_USER=${SUPPORT_EMAIL} and SMTP_PASS in .env to enable contact email.`);
-  } else {
-    console.log(`SMTP credentials configured for ${SUPPORT_EMAIL}; actual delivery will be checked when an email is sent.`);
-  }
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`KCAU SDA Church website running on http://localhost:${PORT}`);
+    console.log(`Admin dashboard:               http://localhost:${PORT}/admin.html`);
+    if (!process.env.ADMIN_PASSWORD) console.log('Using the DEFAULT admin password - please change it (see server.js).');
+    if (SMTP_USER.toLowerCase() !== SUPPORT_EMAIL || !SMTP_PASS) {
+      console.warn(`Email is not configured. Set SMTP_USER=${SUPPORT_EMAIL} and SMTP_PASS in .env to enable contact email.`);
+    } else {
+      console.log(`SMTP credentials configured for ${SUPPORT_EMAIL}; actual delivery will be checked when an email is sent.`);
+    }
+  });
+}
+
+module.exports = app;
