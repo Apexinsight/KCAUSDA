@@ -19,10 +19,7 @@ if (envResult.error && envResult.error.code !== 'ENOENT') {
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'kcau-sda-admin';
-if (process.env.VERCEL && !process.env.ADMIN_PASSWORD) {
-  throw new Error('Set a strong ADMIN_PASSWORD in the Vercel project settings before deploying.');
-}
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || (process.env.VERCEL ? '' : 'kcau-sda-admin');
 const SUPPORT_EMAIL = 'kcausdasupport@gmail.com';
 const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
 const SMTP_PORT = Number(process.env.SMTP_PORT || 465);
@@ -247,6 +244,9 @@ const checkinAttempts = new Map();
 const tokens = new Set();
 
 app.post('/api/login', (req, res) => {
+  if (!ADMIN_PASSWORD) {
+    return res.status(503).json({ error: 'Admin sign-in is not configured. Set ADMIN_PASSWORD in the Vercel project settings.' });
+  }
   if (isRateLimited(loginRequestAttempts, requestIp(req), 10, 15 * 60 * 1000)) {
     return res.status(429).json({ error: 'Too many sign-in attempts. Please wait and try again.' });
   }
