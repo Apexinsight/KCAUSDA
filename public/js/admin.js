@@ -2,6 +2,10 @@
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+if (location.hostname.endsWith('github.io')) {
+  document.querySelector('#loginForm').hidden = true;
+  document.querySelector('#pagesPreviewNotice').hidden = false;
+}
 const adminImage = (image, alt) => /^\/uploads\/[\da-f]{32}\.(?:jpg|png|webp)$/.test(image || '')
   ? `<img src="${esc(image)}" alt="${esc(alt)}" loading="lazy" style="width:110px;height:76px;object-fit:cover;border-radius:8px;margin-bottom:8px" />` : '';
 

@@ -22,20 +22,15 @@ npm start
 
 Alternatively, on a hosting provider set the same values in its environment/secrets settings. `SMTP_USER` must be the support mailbox, and `SMTP_PASS` must be its Google App Password (not the normal Google account password). Without working SMTP credentials, contact messages will still be saved, but sending email notifications will report a clear error. At startup, the server logs whether the required email settings are present; failed delivery logs the underlying SMTP error.
 
-## Deploy to Render
-The included `render.yaml` configures a free Node web service and the `kcausda.com` custom domain. Free Render services have temporary storage: membership, messages and uploaded photos can be lost when the service restarts or redeploys. To publish and enable automatic deploys when GitHub changes are pushed:
-1. Push this project to the `Apexinsight/KCAUSDA` GitHub repository.
-2. In Render, choose **New > Blueprint**, connect that repository, and apply the `render.yaml` blueprint.
-3. The Blueprint generates a unique `ADMIN_PASSWORD`; copy it from the Render service environment settings for admin sign-in. Set `SMTP_PASS` to the support mailbox's Gmail App Password to enable contact email.
-4. In the domain registrar's DNS settings, point the root domain to Render and remove conflicting `AAAA` records. For a standard DNS provider, add an `A` record for `@` pointing to `216.24.57.1`; Render's Blueprint adds both the root and `www` domains. Configure `www` as a `CNAME` to the service's `onrender.com` hostname if it is not automatically configured by your DNS provider. In Cloudflare, use DNS-only CNAME records for both `@` and `www` pointing to the Render hostname.
-5. In Render, verify the custom domain and wait for its managed TLS certificate. The site is served at `https://kcausda.com/`; the admin dashboard is at `https://kcausda.com/admin.html`.
+## GitHub Pages preview
+The GitHub Actions workflow publishes the static frontend at `https://apexinsight.github.io/KCAUSDA/` whenever `main` is updated. In the repository, open **Settings > Pages** and set **Build and deployment > Source** to **GitHub Actions**. The first successful workflow run appears in the repository's **Actions** tab.
+
+GitHub Pages hosts the visual preview only. It cannot run this project's Node/Express server, so live events, family groups, contact forms, admin management, uploads and other API features need a Node host. The admin page explains this limitation when opened on the Pages URL.
+
+## Optional Node backend on Render
+The included `render.yaml` can create a free Node web service for API features. Free Render services have temporary storage, so membership, messages and uploaded photos can be lost after a restart or redeploy. In Render, choose **New > Blueprint**, connect this repository and apply `render.yaml`. Set `SMTP_PASS` to the support mailbox's Gmail App Password if contact email notifications should be enabled. For a fully integrated frontend and backend on one origin, use a Node web host to serve the website; GitHub Pages cannot proxy API calls to it.
 
 Keep `.env` and real passwords out of GitHub. Render receives secrets through its environment settings.
-
-## GitHub Pages preview
-The GitHub Pages workflow publishes the static frontend from `public/` at `https://apexinsight.github.io/KCAUSDA/`. In the repository, open **Settings > Pages** and set the source to **GitHub Actions**. The first deploy runs after the workflow file is pushed to `main`.
-
-GitHub Pages cannot run the Node/Express server. The Pages site is a visual preview; live events, family groups, contact forms, admin actions, uploads and other `/api` features require the Render service above.
 
 ## Change the admin password (IMPORTANT)
 The default password is `kcau-sda-admin`; do not use it on a public deployment. Set a unique strong password using the `ADMIN_PASSWORD` environment variable above. Admin sign-in checks this password directly and does not send an email code.
