@@ -31,6 +31,11 @@ The included `render.yaml` configures a Node web service and persistent storage 
 
 Keep `.env` and real passwords out of GitHub. Render receives secrets through its environment settings.
 
+## GitHub Pages preview
+The GitHub Pages workflow publishes the static frontend from `public/` at `https://apexinsight.github.io/KCAUSDA/`. In the repository, open **Settings > Pages** and set the source to **GitHub Actions**. The first deploy runs after the workflow file is pushed to `main`.
+
+GitHub Pages cannot run the Node/Express server. The Pages site is a visual preview; live events, family groups, contact forms, admin actions, uploads and other `/api` features require the Render service above. To connect the Pages frontend to a deployed backend, set the `data-api-base` attribute on the `<html>` element in both `public/index.html` and `public/admin.html` to that service's HTTPS origin, with no trailing slash. The backend must allow requests from `https://apexinsight.github.io` (CORS) for cross-origin API calls.
+
 ## Change the admin password (IMPORTANT)
 The default password is `kcau-sda-admin`; do not use it on a public deployment. Set a unique strong password using the `ADMIN_PASSWORD` environment variable above. Admin sign-in checks this password directly and does not send an email code.
 

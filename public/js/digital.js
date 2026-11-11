@@ -1,4 +1,9 @@
 /* ===== KCAU SDA digital church features ===== */
+const DIGITAL_API_BASE = document.documentElement.dataset.apiBase || '';
+const digitalApiUrl = (url) => `${DIGITAL_API_BASE}${url}`;
+const digitalImageUrl = (image) => DIGITAL_API_BASE
+  ? `${DIGITAL_API_BASE}${image}`
+  : location.hostname.endsWith('github.io') ? `/KCAUSDA${image}` : image;
 const digitalCopy = {
   en: {
     brandChurch: 'Church', mainNavigation: 'Main navigation', navAbout: 'About', navEvents: 'Events', navNews: 'News', navGallery: 'Gallery', navDigital: 'Digital Hub',
@@ -278,7 +283,7 @@ const escapeDigital = (value) => String(value ?? '').replace(/[&<>"']/g, (char) 
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
 }[char]));
 const imageMarkup = (image, alt) => /^\/uploads\/[\da-f]{32}\.(?:jpg|png|webp)$/.test(image || '')
-  ? `<img class="content-image" src="${escapeDigital(image)}" alt="${escapeDigital(alt)}" loading="lazy" />` : '';
+  ? `<img class="content-image" src="${escapeDigital(digitalImageUrl(image))}" alt="${escapeDigital(alt)}" loading="lazy" />` : '';
 
 function applyLanguage() {
   document.documentElement.lang = language;
@@ -423,11 +428,11 @@ async function loadDigitalContent() {
   if (!sessionsElement || !bulletinsElement) return;
   try {
     const [sessions, bulletins] = await Promise.all([
-      fetch('/api/digital/sessions').then(async (response) => {
+      fetch(digitalApiUrl('/api/digital/sessions')).then(async (response) => {
         if (!response.ok) throw new Error('sessions unavailable');
         return response.json();
       }),
-      fetch('/api/digital/bulletins').then(async (response) => {
+      fetch(digitalApiUrl('/api/digital/bulletins')).then(async (response) => {
         if (!response.ok) throw new Error('bulletins unavailable');
         return response.json();
       }),
@@ -472,7 +477,7 @@ async function loadGalleryAndSocial() {
   if (!gallery || !social || !socialStatus) return;
 
   try {
-    const response = await fetch('/api/gallery');
+    const response = await fetch(digitalApiUrl('/api/gallery'));
     if (!response.ok) throw new Error('Gallery unavailable');
     const photos = await response.json();
     gallery.innerHTML = photos.length ? photos.map((photo) => {
@@ -485,7 +490,7 @@ async function loadGalleryAndSocial() {
   }
 
   try {
-    const response = await fetch('/api/social-links');
+    const response = await fetch(digitalApiUrl('/api/social-links'));
     if (!response.ok) throw new Error('Social links unavailable');
     const links = await response.json();
     const platforms = [
@@ -511,7 +516,7 @@ document.querySelector('#resourceSearch')?.addEventListener('submit', async (eve
   }
   results.textContent = '…';
   try {
-    const response = await fetch(`/api/digital/search?q=${encodeURIComponent(query)}`);
+    const response = await fetch(digitalApiUrl(`/api/digital/search?q=${encodeURIComponent(query)}`));
     if (!response.ok) throw new Error('Search failed');
     const list = await response.json();
     const normalizedQuery = query.toLocaleLowerCase();
@@ -576,7 +581,7 @@ function newAttendanceId() {
 }
 if (checkinEventId && checkinToken && checkinForm) {
   checkinForm.hidden = false;
-  fetch('/api/events').then((response) => response.json()).then((events) => {
+  fetch(digitalApiUrl('/api/events')).then((response) => response.json()).then((events) => {
     const event = events.find((item) => item.id === checkinEventId);
     document.querySelector('#checkinEventName').textContent = event ? event.title : '';
     checkinForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -600,7 +605,7 @@ checkinForm?.addEventListener('submit', async (event) => {
       attendanceId = newAttendanceId();
       try { localStorage.setItem(storageKey, attendanceId); } catch { /* Server still de-duplicates during this attempt. */ }
     }
-    const response = await fetch('/api/check-in', {
+    const response = await fetch(digitalApiUrl('/api/check-in'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ eventId: checkinEventId, token: checkinToken, attendanceId }),

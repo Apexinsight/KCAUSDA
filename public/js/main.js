@@ -11,10 +11,15 @@ const localized = (item, englishKey, swahiliKey) => {
     fallback: isSwahili && !item[swahiliKey],
   };
 };
+const API_BASE = document.documentElement.dataset.apiBase || '';
 const renderImage = (image, alt) => /^\/uploads\/[\da-f]{32}\.(?:jpg|png|webp)$/.test(image || '')
-  ? `<img class="content-image" src="${esc(image)}" alt="${esc(alt)}" loading="lazy" />` : '';
+  ? `<img class="content-image" src="${esc(API_BASE ? `${API_BASE}${image}` : location.hostname.endsWith('github.io') ? `/KCAUSDA${image}` : image)}" alt="${esc(alt)}" loading="lazy" />` : '';
+if (!API_BASE && location.hostname.endsWith('github.io')) {
+  const notice = document.querySelector('#backendNotice');
+  if (notice) notice.hidden = false;
+}
 const api = async (url, opts) => {
-  const res = await fetch(url, opts);
+  const res = await fetch(`${API_BASE}${url}`, opts);
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     const error = new Error(data.error || 'Something went wrong');

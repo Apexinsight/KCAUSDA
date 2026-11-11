@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-api-base="">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="/KCAUSDA/css/style.css" />
 </head>
 <body>
 
@@ -101,6 +101,7 @@
         <button class="pill" data-f="all" data-i18n="filterAll">All</button>
         <button class="pill" data-f="past" data-i18n="filterPast">Past</button>
       </div>
+      <p class="empty" id="backendNotice" hidden>This preview needs the church website server for live events, groups, forms, and admin tools.</p>
       <div class="grid events" id="eventsGrid"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
     </div>
   </section>
@@ -275,7 +276,7 @@
     <div class="container foot-inner">
       <div><strong data-i18n="footerChurch">KCAU SDA Church</strong><p data-i18n="footerMotto">Worship · Fellowship · Service</p></div>
       <div class="foot-links">
-        <a href="#about" data-i18n="navAbout">About</a><a href="#events" data-i18n="navEvents">Events</a><a href="#news" data-i18n="navNews">News</a><a href="#gallery" data-i18n="navGallery">Gallery</a><a href="#groups" data-i18n="footerGroups">Groups</a><a href="admin.html" data-i18n="footerAdmin">Admin</a>
+        <a href="#about" data-i18n="navAbout">About</a><a href="#events" data-i18n="navEvents">Events</a><a href="#news" data-i18n="navNews">News</a><a href="#gallery" data-i18n="navGallery">Gallery</a><a href="#groups" data-i18n="footerGroups">Groups</a><a href="/KCAUSDA/admin.html" data-i18n="footerAdmin">Admin</a>
       </div>
       <div class="social-links" id="socialLinks" aria-label="Social media links"></div>
       <p class="social-links-status" id="socialLinksStatus" role="status"></p>
@@ -315,7 +316,7 @@
   </div>
 
   <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
-  <script src="js/main.js"></script>
-  <script src="js/digital.js"></script>
+  <script src="/KCAUSDA/js/main.js"></script>
+  <script src="/KCAUSDA/js/digital.js"></script>
 </body>
 </html>
