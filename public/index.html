@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KCAU SDA Church | Worship, Events &amp; Family Groups</title>
+  <meta name="description" content="KCAU Seventh-day Adventist Church - worship, events, news and family groups for students and staff." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="#home" class="brand">
+        <span class="brand-mark" aria-hidden="true">✝</span>
+        <span class="brand-text"><strong>KCAU SDA</strong><small data-i18n="brandChurch">Church</small></span>
+      </a>
+      <nav class="menu" id="menu" aria-label="Main navigation" data-i18n-aria-label="mainNavigation">
+        <a href="#about" data-i18n="navAbout">About</a>
+        <a href="#events" data-i18n="navEvents">Events</a>
+        <a href="#news" data-i18n="navNews">News</a>
+        <a href="#gallery" data-i18n="navGallery">Gallery</a>
+        <a href="#digital" data-i18n="navDigital">Digital Hub</a>
+        <a href="#groups" data-i18n="navGroups">Family Groups</a>
+        <a href="#ministries" data-i18n="navMinistries">Ministries</a>
+        <a href="#contact" data-i18n="navContact">Contact</a>
+        <a href="#groups" class="btn btn-gold btn-sm" data-i18n="navJoinGroup">Join a Group</a>
+        <label class="language-picker"><span data-i18n="languageLabel">Language</span>
+          <select id="languageSwitcher" aria-label="Choose language"><option value="en">English</option><option value="sw">Kiswahili</option></select>
+        </label>
+      </nav>
+      <button class="burger" id="burger" aria-label="Open menu" aria-controls="menu" aria-expanded="false" data-i18n-aria-label="menuOpen"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="home">
+    <div class="hero-glow"></div>
+    <div class="container hero-inner">
+      <p class="eyebrow reveal" data-i18n="heroEyebrow">Welcome to KCAU SDA Church</p>
+      <h1 class="reveal"><span data-i18n="heroLineOne">A family of faith,</span><br /><em data-i18n="heroHope">hope</em> <span data-i18n="heroAnd">and</span> <em data-i18n="heroLove">love</em> <span data-i18n="heroCampus">on campus.</span></h1>
+      <p class="lead reveal" data-i18n="heroLead">Worship with us every Sabbath, grow in a family group, and find friends who will walk with you through your university journey.</p>
+      <div class="hero-cta reveal">
+        <a href="#groups" class="btn btn-gold" data-i18n="heroJoin">Join a Family Group</a>
+        <a href="#events" class="btn btn-ghost" data-i18n="heroEvents">See Upcoming Events</a>
+      </div>
+
+      <div class="next-card reveal" id="nextCard" hidden>
+        <span class="chip" data-i18n="nextEvent">Next event</span>
+        <h3 id="nextTitle"></h3>
+        <p id="nextMeta"></p>
+        <div class="countdown" id="countdown"></div>
+      </div>
+    </div>
+    <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0,40 C240,100 480,0 720,30 C960,60 1200,100 1440,40 L1440,90 L0,90 Z" fill="var(--bg)"/></svg>
+  </section>
+
+  <!-- ===== SERVICE TIMES ===== -->
+  <section class="times container">
+    <div class="time-card reveal"><span class="ico">📖</span><h4 data-i18n="timeSchool">Sabbath School</h4><p data-i18n="timeSchoolTime">Saturday · 9:00 AM</p></div>
+    <div class="time-card reveal"><span class="ico">🕊️</span><h4 data-i18n="timeService">Divine Service</h4><p data-i18n="timeServiceTime">Saturday · 11:00 AM</p></div>
+    <div class="time-card reveal"><span class="ico">🎶</span><h4 data-i18n="timeVespers">Youth Vespers</h4><p data-i18n="timeVespersTime">Friday · 6:30 PM</p></div>
+    <div class="time-card reveal"><span class="ico">🙏</span><h4 data-i18n="timePrayer">Midweek Prayer</h4><p data-i18n="timePrayerTime">Wednesday · 7:00 PM</p></div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="section" id="about">
+    <div class="container about-grid">
+      <div class="about-text">
+        <p class="eyebrow dark reveal" data-i18n="aboutEyebrow">Who we are</p>
+        <h2 class="reveal" data-i18n="aboutTitle">Christ-centred. Student-led. Mission-driven.</h2>
+        <p class="reveal" data-i18n="aboutTextOne">KCAU SDA Church is a vibrant community of Seventh-day Adventist students, lecturers and staff. We gather to worship God, study His Word, and serve one another and the wider community.</p>
+        <p class="reveal" data-i18n="aboutTextTwo">Whether you have been an Adventist all your life or are just curious, there is a seat for you here.</p>
+        <ul class="ticks reveal">
+          <li data-i18n="aboutTickOne">Bible-based preaching and teaching</li>
+          <li data-i18n="aboutTickTwo">Small family groups for real friendship</li>
+          <li data-i18n="aboutTickThree">Opportunities to serve, sing and lead</li>
+        </ul>
+      </div>
+      <div class="about-cards">
+        <div class="mini reveal"><strong data-i18n="missionTitle">Our Mission</strong><p data-i18n="missionText">To love God, love people and share the good news of Jesus on and off campus.</p></div>
+        <div class="mini reveal"><strong data-i18n="visionTitle">Our Vision</strong><p data-i18n="visionText">A campus family transformed by Christ and ready for His soon return.</p></div>
+        <div class="mini reveal"><strong data-i18n="valuesTitle">Our Values</strong><p data-i18n="valuesText">Faith · Fellowship · Service · Integrity · Hope</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EVENTS ===== -->
+  <section class="section alt" id="events">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow dark reveal" data-i18n="eventsEyebrow">What's happening</p>
+        <h2 class="reveal" data-i18n="eventsTitle">Upcoming Events</h2>
+      </div>
+      <div class="filters reveal" id="eventFilters">
+        <button class="pill active" data-f="upcoming" data-i18n="filterUpcoming">Upcoming</button>
+        <button class="pill" data-f="all" data-i18n="filterAll">All</button>
+        <button class="pill" data-f="past" data-i18n="filterPast">Past</button>
+      </div>
+      <div class="grid events" id="eventsGrid"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+    </div>
+  </section>
+
+  <!-- ===== DIGITAL CHURCH EXPERIENCE ===== -->
+  <section class="section digital-sec" id="digital">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow dark reveal" data-i18n="digitalEyebrow">Worship and grow wherever you are</p>
+        <h2 class="reveal" data-i18n="digitalTitle">KCAU Digital Church</h2>
+        <p class="reveal digital-intro" data-i18n="digitalIntro">Join online gatherings, follow a Bible reading plan, and find church updates in one place.</p>
+      </div>
+
+      <div class="digital-tools reveal">
+        <form id="resourceSearch" role="search">
+          <label for="resourceQuery" data-i18n="searchLabel">Search church updates and resources</label>
+          <div class="search-row">
+            <input id="resourceQuery" type="search" maxlength="120" placeholder="Try “prayer” or “Bible study”" data-i18n-placeholder="searchPlaceholder" />
+            <button class="btn btn-navy" type="submit" data-i18n="searchButton">Search</button>
+          </div>
+        </form>
+        <div id="resourceResults" class="resource-results" aria-live="polite"></div>
+        <p class="provider-note" data-i18n="searchNote">Search matches published text. AI-powered search and sermon transcription are not connected.</p>
+      </div>
+
+      <div class="digital-grid">
+        <article class="digital-card reveal">
+          <p class="eyebrow dark" data-i18n="gatheringsEyebrow">Gather online</p>
+          <h3 data-i18n="gatheringsTitle">Livestream, Bible study &amp; prayer</h3>
+          <p data-i18n="gatheringsIntro">Links are shared by church administrators. If no meeting is listed, check back for the next gathering.</p>
+          <div id="digitalSessions" class="digital-list" aria-live="polite"><div class="skeleton"></div></div>
+          <p class="provider-note" data-i18n="providerNote">Online meetings use the link published by the church. No streaming provider is connected to this website.</p>
+        </article>
+
+        <article class="digital-card reveal">
+          <p class="eyebrow dark" data-i18n="bulletinEyebrow">Church life</p>
+          <h3 data-i18n="bulletinTitle">Weekly digital bulletin</h3>
+          <div id="digitalBulletins" class="digital-list" aria-live="polite"><div class="skeleton"></div></div>
+        </article>
+
+        <article class="digital-card reveal reading-card">
+          <p class="eyebrow dark" data-i18n="readingEyebrow">Time in the Word</p>
+          <h3 id="readingPlanTitle" data-i18n="readingTitle">A new Bible book each week</h3>
+          <p data-i18n="readingIntro">A simple reading plan. Your progress is saved only in this browser.</p>
+          <p id="readingWeek" class="reading-week" aria-live="polite"></p>
+          <ol id="readingPlan" class="reading-plan"></ol>
+          <p id="readingProgress" class="reading-progress" aria-live="polite"></p>
+          <button type="button" class="btn btn-navy reading-restart" id="readingRestart" hidden data-i18n="readingRestart">Start the plan again</button>
+          <div class="quiz">
+            <h4 data-i18n="quizTitle">Quick Bible quiz</h4>
+            <p id="quizQuestion"></p>
+            <div id="quizAnswers" class="quiz-answers"></div>
+            <p id="quizFeedback" class="form-msg" role="status"></p>
+          </div>
+        </article>
+
+        <article class="digital-card reveal">
+          <p class="eyebrow dark" data-i18n="faqEyebrow">Need a hand?</p>
+          <h3 data-i18n="faqTitle">Church FAQ helper</h3>
+          <p data-i18n="faqIntro">Ask about service times, joining a group, or how to find us. Answers are prepared by the church, not AI-generated.</p>
+          <form id="faqForm">
+            <label for="faqQuestion" data-i18n="faqInputLabel">Your question</label>
+            <div class="search-row">
+              <input id="faqQuestion" maxlength="240" required placeholder="How can I join a group?" data-i18n-placeholder="faqPlaceholder" />
+              <button class="btn btn-navy" type="submit" data-i18n="askButton">Ask</button>
+            </div>
+          </form>
+          <p id="faqAnswer" class="faq-answer" role="status" aria-live="polite"></p>
+        </article>
+      </div>
+
+      <p class="checkin-privacy" data-i18n="checkinPrivacy">Event QR check-in is anonymous and limited to one check-in per browser. It is not identity-verified attendance.</p>
+      <form class="checkin-panel" id="checkinPanel" hidden>
+        <h3 data-i18n="checkinTitle">Event check-in</h3>
+        <p id="checkinEventName"></p>
+        <p data-i18n="checkinConsent">Continue to record one anonymous check-in from this browser. No name or contact details are collected.</p>
+        <button class="btn btn-gold" type="submit" data-i18n="checkinButton">Check in</button>
+        <p class="form-msg" id="checkinMsg" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== NEWS ===== -->
+  <section class="section" id="news">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow dark reveal" data-i18n="newsEyebrow">Stay informed</p>
+        <h2 class="reveal" data-i18n="newsTitle">Digital Noticeboard</h2>
+        <p class="reveal" data-i18n="newsIntro">The latest church news and announcements, published by the church team.</p>
+      </div>
+      <div class="grid news" id="newsGrid"><div class="skeleton"></div><div class="skeleton"></div></div>
+    </div>
+  </section>
+
+  <!-- ===== PHOTO GALLERY ===== -->
+  <section class="section alt" id="gallery">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow dark" data-i18n="galleryEyebrow">Life together</p>
+        <h2 data-i18n="galleryTitle">Church Photo Gallery</h2>
+        <p data-i18n="galleryIntro">Moments from worship, fellowship and service at KCAU SDA Church.</p>
+      </div>
+      <div class="gallery-grid" id="galleryGrid" aria-live="polite"><div class="skeleton"></div></div>
+    </div>
+  </section>
+
+  <!-- ===== FAMILY GROUPS ===== -->
+  <section class="section groups-sec" id="groups">
+    <div class="container">
+      <div class="section-head light">
+        <p class="eyebrow reveal" data-i18n="groupsEyebrow">Find your people</p>
+        <h2 class="reveal" data-i18n="groupsTitle">Family Groups</h2>
+        <p class="sub reveal" data-i18n="groupsIntro">Family groups are small circles that meet during the week for prayer, Bible study and friendship. Pick one and join in under a minute.</p>
+      </div>
+      <div class="grid groups" id="groupsGrid"><div class="skeleton dark"></div><div class="skeleton dark"></div><div class="skeleton dark"></div></div>
+    </div>
+  </section>
+
+  <!-- ===== MINISTRIES ===== -->
+  <section class="section" id="ministries">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow dark reveal" data-i18n="ministriesEyebrow">Get involved</p>
+        <h2 class="reveal" data-i18n="ministriesTitle">Our Ministries</h2>
+      </div>
+      <div class="grid ministries">
+        <div class="min-card reveal"><span class="ico">🎤</span><h4 data-i18n="ministryChoir">Choir &amp; Praise Team</h4><p data-i18n="ministryChoirText">Lead the congregation in song and worship.</p></div>
+        <div class="min-card reveal"><span class="ico">🧒</span><h4 data-i18n="ministryYouth">Adventist Youth (AY)</h4><p data-i18n="ministryYouthText">Fun, faith and service for young people.</p></div>
+        <div class="min-card reveal"><span class="ico">📚</span><h4 data-i18n="ministryBible">Bible Study</h4><p data-i18n="ministryBibleText">Dig deeper into Scripture with friends.</p></div>
+        <div class="min-card reveal"><span class="ico">🤝</span><h4 data-i18n="ministryOutreach">Community Outreach</h4><p data-i18n="ministryOutreachText">Serve our neighbours with love and action.</p></div>
+        <div class="min-card reveal"><span class="ico">🎧</span><h4 data-i18n="ministryMedia">Media &amp; Sound</h4><p data-i18n="ministryMediaText">Help us share the message with the world.</p></div>
+        <div class="min-card reveal"><span class="ico">🍞</span><h4 data-i18n="ministryHospitality">Hospitality</h4><p data-i18n="ministryHospitalityText">Welcome every guest like family.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VERSE BAND ===== -->
+  <section class="verse">
+    <div class="container reveal">
+      <p data-i18n="verseText">“For where two or three gather in my name, there am I with them.”</p>
+      <span>Matthew 18:20</span>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section class="section" id="contact">
+    <div class="container contact-grid">
+      <div>
+        <p class="eyebrow dark reveal" data-i18n="contactEyebrow">Say hello</p>
+        <h2 class="reveal" data-i18n="contactTitle">Contact Us</h2>
+        <p class="reveal" data-i18n="contactIntro">Have a question, a prayer request or want to serve? Send us a message and a church leader will get back to you.</p>
+        <p class="contact-note" data-i18n="contactDeliveryNote">Messages sent with this form are saved in the church admin dashboard and emailed to kcausdasupport@gmail.com. For direct support, email us.</p>
+        <ul class="contact-list reveal">
+          <li><span class="contact-icon" aria-hidden="true">📍</span><span class="contact-detail" data-i18n="contactLocation">KCAU Campus Chapel</span></li>
+          <li><span class="contact-icon" aria-hidden="true">🕘</span><span class="contact-detail" data-i18n="contactHours">Sabbath: 9:00 AM – 1:00 PM</span></li>
+          <li><span class="contact-icon" aria-hidden="true">✉️</span><a class="contact-detail" href="mailto:kcausdasupport@gmail.com">kcausdasupport@gmail.com</a></li>
+          <li><span class="contact-icon" aria-hidden="true">📝</span><a class="contact-detail" href="#contactForm" data-i18n="contactFormLink">Send a message using the form</a></li>
+        </ul>
+      </div>
+      <form class="card form" id="contactForm" novalidate>
+        <label><span data-i18n="formName">Your name</span><input name="name" required maxlength="80" autocomplete="name" /></label>
+        <label><span data-i18n="formEmail">Email (optional)</span><input name="email" type="email" maxlength="120" autocomplete="email" /></label>
+        <label><span data-i18n="formMessage">Message</span><textarea name="message" rows="4" required maxlength="2000"></textarea></label>
+        <button class="btn btn-navy" type="submit" data-i18n="sendMessage">Send message</button>
+        <p class="form-msg" id="contactMsg" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container foot-inner">
+      <div><strong data-i18n="footerChurch">KCAU SDA Church</strong><p data-i18n="footerMotto">Worship · Fellowship · Service</p></div>
+      <div class="foot-links">
+        <a href="#about" data-i18n="navAbout">About</a><a href="#events" data-i18n="navEvents">Events</a><a href="#news" data-i18n="navNews">News</a><a href="#gallery" data-i18n="navGallery">Gallery</a><a href="#groups" data-i18n="footerGroups">Groups</a><a href="admin.html" data-i18n="footerAdmin">Admin</a>
+      </div>
+      <div class="social-links" id="socialLinks" aria-label="Social media links"></div>
+      <p class="social-links-status" id="socialLinksStatus" role="status"></p>
+      <p class="copy">© <span id="year"></span> <span data-i18n="copyright">KCAU SDA Church. All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <!-- ===== JOIN MODAL ===== -->
+  <div class="modal" id="joinModal" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="joinTitle">
+      <button class="modal-x" id="joinClose" aria-label="Close" data-i18n-aria-label="close">×</button>
+      <div id="joinFormWrap">
+        <h3 id="joinTitle" data-i18n="joinTitle">Join a Family Group</h3>
+        <p class="modal-sub" id="joinGroupName"></p>
+        <form class="form" id="joinForm" novalidate>
+          <input type="hidden" name="groupId" id="joinGroupId" />
+          <label><span data-i18n="fullName">Full name</span><input name="name" required maxlength="80" autocomplete="name" /></label>
+          <label><span data-i18n="phoneNumber">Phone number</span><input name="phone" required maxlength="20" inputmode="tel" placeholder="0712 345 678" autocomplete="tel" /></label>
+          <label><span data-i18n="formEmail">Email (optional)</span><input name="email" type="email" maxlength="120" autocomplete="email" /></label>
+          <div class="row2">
+            <label><span data-i18n="course">Course</span><input name="course" maxlength="100" placeholder="e.g. BCom" /></label>
+            <label><span data-i18n="year">Year</span><select name="year"><option value="" data-i18n="select">Select</option><option value="Year 1" data-i18n="yearOne">Year 1</option><option value="Year 2" data-i18n="yearTwo">Year 2</option><option value="Year 3" data-i18n="yearThree">Year 3</option><option value="Year 4" data-i18n="yearFour">Year 4</option><option value="Staff" data-i18n="yearStaff">Staff</option><option value="Other" data-i18n="yearOther">Other</option></select></label>
+          </div>
+          <button class="btn btn-gold" type="submit" data-i18n="joinButton">Join this group</button>
+          <p class="form-msg" id="joinMsg" role="status"></p>
+        </form>
+      </div>
+      <div class="success" id="joinSuccess" hidden>
+        <div class="check">✓</div>
+        <h3 data-i18n="joinSuccessTitle">Welcome to the family!</h3>
+        <p id="joinSuccessText"></p>
+        <a class="btn btn-gold" id="joinWhatsAppLink" href="#" target="_blank" rel="noopener noreferrer" hidden data-i18n="joinWhatsAppGroup">Join the WhatsApp group</a>
+        <p id="whatsAppInviteNote" hidden data-i18n="whatsAppInviteNote">WhatsApp will ask you to accept the group invitation.</p>
+        <button class="btn btn-navy" id="joinDone" data-i18n="doneButton">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+  <script src="js/main.js"></script>
+  <script src="js/digital.js"></script>
+</body>
+</html>

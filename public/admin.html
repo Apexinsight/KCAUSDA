@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Admin | KCAU SDA Church</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    [hidden] { display: none !important; }
+    body { background: var(--alt); }
+    .login { min-height: 100vh; display: grid; place-items: center; padding: 20px; background: linear-gradient(135deg, #0b1a35, #2a4f98); }
+    .login .card { width: min(400px, 100%); }
+    .login h1 { font-size: 1.8rem; text-align: center; }
+    .login .btn-ghost { border-color: var(--navy); color: var(--navy); }
+    .bar { background: var(--navy); color: #fff; padding: 14px 0; position: sticky; top: 0; z-index: 20; }
+    .bar .container { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .bar strong { font-family: 'Playfair Display', serif; font-size: 1.2rem; }
+    .bar a, .bar button { color: #fff; background: none; border: 1px solid rgba(255,255,255,.4); padding: 7px 16px; border-radius: 999px; cursor: pointer; font: inherit; font-size: .9rem; margin-left: 8px; }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 26px 0 20px; }
+    .panel { display: none; } .panel.show { display: block; }
+    .two { display: grid; grid-template-columns: 340px 1fr; gap: 24px; align-items: start; }
+    .item { background: #fff; border-radius: 14px; padding: 16px 18px; margin-bottom: 12px; box-shadow: var(--shadow); display: flex; justify-content: space-between; gap: 14px; }
+    .item h4 { margin: 0 0 2px; font-size: 1.05rem; }
+    .item p { margin: 2px 0 0; color: var(--muted); font-size: .9rem; }
+    .del { background: #fdecee; color: #c62f3d; border: 0; border-radius: 10px; padding: 8px 14px; cursor: pointer; font-weight: 600; font-family: inherit; align-self: flex-start; }
+    .del:hover { background: #c62f3d; color: #fff; }
+    .edit { background: #e8efff; color: var(--blue); border: 0; border-radius: 10px; padding: 8px 14px; cursor: pointer; font-weight: 600; font-family: inherit; align-self: flex-start; }
+    .actions { display: flex; gap: 8px; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 20px; }
+    .stat { background: #fff; border-radius: 14px; padding: 16px; box-shadow: var(--shadow); }
+    .stat b { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--navy); display: block; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); font-size: .9rem; }
+    th, td { padding: 11px 14px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: var(--navy); color: #fff; font-weight: 600; }
+    .tablewrap { overflow-x: auto; }
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+    .toolbar select, .toolbar input { padding: 10px 14px; border-radius: 999px; border: 1.5px solid #d9d4c4; font: inherit; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; padding: 12px 22px; border-radius: 999px; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 200; }
+    .toast.show { opacity: 1; }
+    .qr-panel { margin-top: 20px; padding: 20px; background: #fff; border-radius: 14px; box-shadow: var(--shadow); }
+    .qr-panel img { width: 220px; max-width: 100%; display: block; margin: 12px auto; }
+    .qr-panel p { overflow-wrap: anywhere; }
+    .event-admin-list { min-width: 0; }
+    #refreshAttendance { margin-bottom: 14px; }
+    .digital-admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 24px; align-items: start; }
+    .admin-note { color: var(--muted); font-size: .9rem; }
+    @media (max-width: 820px) { .two { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div class="login" id="loginView">
+    <form class="card form" id="loginForm">
+      <h1>KCAU SDA Admin</h1>
+      <p style="text-align:center;color:var(--muted);margin-top:0">Sign in to manage the church website.</p>
+      <label>Password<input type="password" name="password" required autofocus /></label>
+      <button class="btn btn-navy" type="submit">Sign in</button>
+      <p class="form-msg err" id="loginMsg"></p>
+    </form>
+    <p style="text-align:center;margin:0;position:absolute;bottom:24px"><a href="/" style="color:#fff;font-weight:600">← Back to website</a></p>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashView" hidden>
+    <div class="bar"><div class="container">
+      <strong>KCAU SDA · Admin</strong>
+      <div><a href="mailto:kcausdasupport@gmail.com">Email support</a><a href="/">View site</a><button id="logout">Log out</button></div>
+    </div></div>
+
+    <div class="container">
+      <div class="tabs" id="tabs">
+        <button class="pill active" data-t="events">Events</button>
+        <button class="pill" data-t="digital">Digital Church</button>
+        <button class="pill" data-t="news">News</button>
+        <button class="pill" data-t="groups">Family Groups</button>
+        <button class="pill" data-t="members">Members</button>
+        <button class="pill" data-t="messages">Messages</button>
+        <button class="pill" data-t="gallery">Gallery &amp; Social</button>
+      </div>
+
+      <!-- EVENTS -->
+      <section class="panel show" id="p-events"><div class="two">
+        <form class="card form" id="eventForm">
+          <h3>Add an event</h3>
+          <label>Title<input name="title" required maxlength="120" /></label>
+          <label>Title (Kiswahili)<input name="swTitle" maxlength="120" /></label>
+          <div class="row2">
+            <label>Date<input name="date" type="date" required /></label>
+            <label>Time<input name="time" type="time" /></label>
+          </div>
+          <label>Location<input name="location" maxlength="120" /></label>
+          <label>Description<textarea name="description" rows="3" maxlength="600"></textarea></label>
+          <label>Description (Kiswahili)<textarea name="swDescription" rows="3" maxlength="600"></textarea></label>
+          <label>Poster image (optional, JPEG/PNG/WebP; max 3 MB)<input name="imageFile" type="file" accept="image/jpeg,image/png,image/webp" /></label>
+          <button class="btn btn-navy" type="submit">Publish event</button>
+        </form>
+        <div class="event-admin-list">
+          <button class="btn btn-navy btn-sm" type="button" id="refreshAttendance">Refresh events &amp; attendance</button>
+          <div id="eventList"></div>
+          <div class="qr-panel" id="eventQrPanel" hidden aria-live="polite"></div>
+        </div>
+      </div></section>
+
+      <!-- DIGITAL CHURCH -->
+      <section class="panel" id="p-digital">
+        <p class="admin-note">Publish meeting links and weekly bulletins. Links are opened as provided; there is no streaming or video provider connected.</p>
+        <div class="digital-admin-grid">
+          <div>
+            <form class="card form" id="sessionForm">
+              <h3>Add an online gathering</h3>
+              <label>Title<input name="title" required maxlength="120" placeholder="Sabbath livestream" /></label>
+              <label>Title (Kiswahili)<input name="swTitle" maxlength="120" /></label>
+              <label>Type<select name="type" required><option value="stream">Live Sabbath service</option><option value="bible-study">Online Bible study</option><option value="prayer">Online prayer meeting</option></select></label>
+              <div class="row2">
+                <label>Date<input name="date" type="date" required /></label>
+                <label>Time<input name="time" type="time" required /></label>
+              </div>
+              <label>Meeting / stream link (optional)<input name="url" type="url" maxlength="500" placeholder="https://…" /></label>
+              <label>Description<textarea name="description" rows="3" maxlength="600"></textarea></label>
+              <label>Description (Kiswahili)<textarea name="swDescription" rows="3" maxlength="600"></textarea></label>
+              <label>Gathering image (optional, JPEG/PNG/WebP; max 3 MB)<input name="imageFile" type="file" accept="image/jpeg,image/png,image/webp" /></label>
+              <button class="btn btn-navy" type="submit">Publish gathering</button>
+            </form>
+            <div id="sessionList"></div>
+          </div>
+          <div>
+            <form class="card form" id="bulletinForm">
+              <h3>Publish weekly bulletin</h3>
+              <label>Title<input name="title" required maxlength="140" placeholder="Week of 16 November" /></label>
+              <label>Week beginning<input name="weekOf" type="date" required /></label>
+              <label>Bulletin (English)<textarea name="body" rows="5" required maxlength="6000"></textarea></label>
+              <label>Bulletin (Kiswahili, optional)<textarea name="swBody" rows="4" maxlength="6000"></textarea></label>
+              <label>Kiswahili title (optional)<input name="swTitle" maxlength="140" /></label>
+              <label>Bulletin image (optional, JPEG/PNG/WebP; max 3 MB)<input name="imageFile" type="file" accept="image/jpeg,image/png,image/webp" /></label>
+              <button class="btn btn-navy" type="submit">Publish bulletin</button>
+            </form>
+            <div id="bulletinList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NEWS -->
+      <section class="panel" id="p-news"><div class="two">
+        <form class="card form" id="newsForm">
+          <h3>Post news</h3>
+          <label>Headline<input name="title" required maxlength="140" /></label>
+          <label>Headline (Kiswahili)<input name="swTitle" maxlength="140" /></label>
+          <label>Date<input name="date" type="date" /></label>
+          <label>Message<textarea name="body" rows="6" required maxlength="3000"></textarea></label>
+          <label>Message (Kiswahili)<textarea name="swBody" rows="6" maxlength="3000"></textarea></label>
+          <label>News image (optional, JPEG/PNG/WebP; max 3 MB)<input name="imageFile" type="file" accept="image/jpeg,image/png,image/webp" /></label>
+          <button class="btn btn-navy" type="submit">Publish news</button>
+        </form>
+        <div id="newsList"></div>
+      </div></section>
+
+      <!-- GROUPS -->
+      <section class="panel" id="p-groups"><div class="two">
+        <form class="card form" id="groupForm">
+          <h3 id="groupFormTitle">Add a family group</h3>
+          <input type="hidden" name="id" />
+          <label>Group name<input name="name" required maxlength="80" placeholder="e.g. Family Group 6" /></label>
+          <label>Group name (Kiswahili)<input name="swName" maxlength="80" /></label>
+          <label>Motto<input name="motto" maxlength="100" /></label>
+          <label>Motto (Kiswahili)<input name="swMotto" maxlength="100" /></label>
+          <label>Meeting day &amp; time<input name="meeting" maxlength="100" placeholder="Wednesdays, 7:00 PM" /></label>
+          <label>Meeting day &amp; time (Kiswahili)<input name="swMeeting" maxlength="100" /></label>
+          <label>Leader<input name="leader" maxlength="80" /></label>
+          <label>WhatsApp group invite link (optional)<input name="whatsappLink" type="url" maxlength="500" placeholder="https://chat.whatsapp.com/..." /></label>
+          <p class="admin-note">New members can tap the invite after joining. WhatsApp requires each person to accept the invite; the website cannot add them automatically.</p>
+          <label>Description<textarea name="description" rows="3" maxlength="400"></textarea></label>
+          <label>Description (Kiswahili)<textarea name="swDescription" rows="3" maxlength="400"></textarea></label>
+          <label>Group image (optional, JPEG/PNG/WebP; max 3 MB)<input name="imageFile" type="file" accept="image/jpeg,image/png,image/webp" /></label>
+          <button class="btn btn-navy" type="submit" id="groupSubmit">Add group</button>
+          <button class="btn btn-ghost" type="button" id="groupCancel" hidden style="color:var(--navy);border-color:var(--navy);margin-top:8px">Cancel edit</button>
+        </form>
+        <div id="groupList"></div>
+      </div></section>
+
+      <!-- MEMBERS -->
+      <section class="panel" id="p-members">
+        <div class="stats" id="memberStats"></div>
+        <div class="toolbar">
+          <select id="memberGroupFilter"><option value="">All groups</option></select>
+          <input id="memberSearch" placeholder="Search name or phone" />
+          <button class="btn btn-navy btn-sm" id="exportCsv">Download CSV</button>
+        </div>
+        <div class="tablewrap"><table><thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Course</th><th>Year</th><th>Group</th><th>Joined</th><th></th></tr></thead><tbody id="memberRows"></tbody></table></div>
+      </section>
+
+      <!-- MESSAGES -->
+      <section class="panel" id="p-messages"><div id="messageList"></div></section>
+
+      <!-- GALLERY AND SOCIAL LINKS -->
+      <section class="panel" id="p-gallery">
+        <div class="digital-admin-grid">
+          <div>
+            <form class="card form" id="galleryForm">
+              <h3>Add a church photo</h3>
+              <label>Photo (JPEG/PNG/WebP; max 3 MB)<input name="imageFile" type="file" accept="image/jpeg,image/png,image/webp" required /></label>
+              <label>Caption (optional)<input name="title" maxlength="120" /></label>
+              <label>Caption (Kiswahili, optional)<input name="swTitle" maxlength="120" /></label>
+              <button class="btn btn-navy" type="submit">Add photo</button>
+            </form>
+            <div id="galleryAdminList"></div>
+          </div>
+          <form class="card form" id="socialLinksForm">
+            <h3>Social account links</h3>
+            <p class="admin-note">Enter full HTTPS profile links. Leave a field empty to hide that social link from the website.</p>
+            <label>TikTok profile<input name="tiktok" type="url" maxlength="500" placeholder="https://www.tiktok.com/@yourchurch" /></label>
+            <label>Instagram profile<input name="instagram" type="url" maxlength="500" placeholder="https://www.instagram.com/yourchurch/" /></label>
+            <label>YouTube channel<input name="youtube" type="url" maxlength="500" placeholder="https://www.youtube.com/@yourchurch" /></label>
+            <button class="btn btn-navy" type="submit">Save social links</button>
+          </form>
+        </div>
+      </section>
+      <div style="height:60px"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="js/admin.js"></script>
+</body>
+</html>
